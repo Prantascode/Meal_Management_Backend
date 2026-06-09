@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("/api/members")
 //@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin("*")
 public class MemberController {
     
     @Autowired

@@ -22,6 +22,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/expenses")
 //@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin("*")
 public class ExpenseController {
     
     @Autowired
