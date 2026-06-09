@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api/ai")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class AiController {
 
     @Value("${gemini.api.key}")

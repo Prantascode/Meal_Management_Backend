@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/meals")
 //@CrossOrigin(origins = "http://localhost:5173")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class MealController {
     
     @Autowired

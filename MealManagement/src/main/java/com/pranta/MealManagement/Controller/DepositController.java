@@ -19,7 +19,7 @@ import com.pranta.MealManagement.Service.DepositService;
 @RestController
 @RequestMapping("/api/deposit")
 //@CrossOrigin(origins = "http://localhost:5173")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class DepositController {
     
     @Autowired

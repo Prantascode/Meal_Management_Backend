@@ -15,7 +15,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/google/oauth")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class GoogleOAuthController {
 
     private final GoogleOAuthConfig googleOAuthConfig;

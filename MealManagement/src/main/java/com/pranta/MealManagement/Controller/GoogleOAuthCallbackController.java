@@ -19,7 +19,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/google/oauth")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class GoogleOAuthCallbackController {
 
     private final GoogleOAuthConfig googleOAuthConfig;

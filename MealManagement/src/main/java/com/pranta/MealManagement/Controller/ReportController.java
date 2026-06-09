@@ -14,7 +14,7 @@ import com.pranta.MealManagement.Service.ReportService;
 @RestController
 @RequestMapping("/api/reports")
 //@CrossOrigin(origins = "http://localhost:5173")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class ReportController {
 
     @Autowired
