@@ -82,7 +82,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "http://localhost:5175","https://meal-managment-frontend-qpuy.vercel.app")); 
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "http://localhost:5175",
+        "https://meal-managment-frontend-qpuy.vercel.app",           // Main domain
+        "https://meal-managment-frontend-git-2bb55d-prantasaha907-7305s-projects.vercel.app", // Git branch preview
+        "https://meal-managment-frontend-qpuy-p94p7y1sd.vercel.app")); 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList(
             "Authorization", 
