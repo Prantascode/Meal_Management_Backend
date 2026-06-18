@@ -68,7 +68,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/ai/**").permitAll()
 
-                        .requestMatchers("/api/meals/**", "/api/deposit/**", "/api/members/**", "/api/dashboard/**")
+                        .requestMatchers("/api/meals/**", "/api/deposit/**", "/api/members/**", "/api/expenses/**")
                         .hasAnyAuthority("ADMIN", "MANAGER", "MEMBER")
 
                         .anyRequest().authenticated()
