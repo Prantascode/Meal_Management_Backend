@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.pranta.MealManagement.Dtos.ExpenseDto;
 import com.pranta.MealManagement.Entity.Expense;
+import com.pranta.MealManagement.Entity.Member;
 import com.pranta.MealManagement.Repository.MemberRepository;
 import com.pranta.MealManagement.Service.ExpenseService;
 
@@ -21,7 +22,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/expenses")
-//@CrossOrigin(origins = "http://localhost:5173")
 @CrossOrigin(origins = "*")
 public class ExpenseController {
     
@@ -31,18 +31,32 @@ public class ExpenseController {
     @Autowired
     private MemberRepository memberRepository;
 
-    private Long getMessIdFromPrincipal(Principal principal) {
+    private Member getLoggedInMember(Principal principal) {
         if (principal == null) throw new RuntimeException("Unauthorized");
         return memberRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new RuntimeException("User not found"))
-                .getMess().getId();
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    private Long getMessIdFromPrincipal(Principal principal) {
+        return getLoggedInMember(principal).getMess().getId();
     }
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     @PostMapping
     public ResponseEntity<ExpenseDto> addExpense(@Valid @RequestBody ExpenseDto expenseDto, Principal principal) {
         try {
-            expenseDto.setMessId(getMessIdFromPrincipal(principal));
+            // Get the logged-in user
+            Member currentUser = getLoggedInMember(principal);
+            
+            // Set the user who is adding the expense (from logged-in user)
+            expenseDto.setAddedById(currentUser.getId());
+            expenseDto.setAddedByName(currentUser.getName());
+            
+            // Set the mess (from logged-in user's mess)
+            expenseDto.setMessId(currentUser.getMess().getId());
+            
+            // Date will be auto-set in the entity using @CreationTimestamp
+            
             ExpenseDto createdExpense = expenseService.addExpense(expenseDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdExpense);
         } catch (RuntimeException e) {
@@ -73,7 +87,10 @@ public class ExpenseController {
     }
     
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<ExpenseDto>> getExpenseByCategory(@PathVariable Expense.ExpenseCategory category, Principal principal) {
+    public ResponseEntity<List<ExpenseDto>> getExpenseByCategory(
+        @PathVariable Expense.ExpenseCategory category, 
+        Principal principal
+    ) {
         Long messId = getMessIdFromPrincipal(principal);
         List<ExpenseDto> expense = expenseService.getExpenseByMessAndCategory(messId, category);
         return ResponseEntity.ok(expense);
@@ -81,8 +98,14 @@ public class ExpenseController {
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     @PutMapping("/{id}")
-    public ResponseEntity<ExpenseDto> updateExpense(@PathVariable Long id, @Valid @RequestBody ExpenseDto expenseDto) {
+    public ResponseEntity<ExpenseDto> updateExpense(
+        @PathVariable Long id, 
+        @Valid @RequestBody ExpenseDto expenseDto,
+        Principal principal
+    ) {
         try {
+            // Optional: Verify the user has permission to update this expense
+            // You might want to check if the expense belongs to their mess
             ExpenseDto updateDto = expenseService.updateExpense(id, expenseDto);
             return ResponseEntity.ok(updateDto);
         } catch (RuntimeException e) {
@@ -92,8 +115,12 @@ public class ExpenseController {
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteExpense(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteExpense(
+        @PathVariable Long id,
+        Principal principal
+    ) {
         try {
+            // Optional: Verify the user has permission to delete this expense
             expenseService.deleteExpense(id);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {

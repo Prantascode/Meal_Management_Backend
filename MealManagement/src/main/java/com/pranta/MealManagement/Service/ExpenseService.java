@@ -1,7 +1,5 @@
 package com.pranta.MealManagement.Service;
 
-
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,20 +27,26 @@ public class ExpenseService {
 
     @Autowired
     private MessRepository messRepository; 
+    
     public ExpenseDto addExpense(ExpenseDto expenseDto) {
+        // Get the member who is adding the expense
         Member addedBy = memberRepository.findById(expenseDto.getAddedById())
                 .orElseThrow(() -> new RuntimeException("Member not Found"));
 
+        // Get the mess
         Mess mess = messRepository.findById(expenseDto.getMessId())
                 .orElseThrow(() -> new RuntimeException("Mess not found"));
 
+        // Create expense entity
         Expense expense = new Expense();
         expense.setDescription(expenseDto.getDescription());
         expense.setAmount(expenseDto.getAmount());
-        expense.setDate(LocalDate.now());
+        // Date will be auto-set by @CreationTimestamp
         expense.setCategory(expenseDto.getCategory());
         expense.setAddedBy(addedBy);
         expense.setMess(mess);
+        
+        // Save and return
         Expense saveExpense = expenseRepository.save(expense);
         return convertToDto(saveExpense);
     }
@@ -81,8 +85,8 @@ public class ExpenseService {
         
         expense.setAmount(expenseDto.getAmount());
         expense.setCategory(expenseDto.getCategory());
-        expense.setDate(expenseDto.getDate());
         expense.setDescription(expenseDto.getDescription());
+        // Don't update date - keep original creation date
         
         Expense updateExpense = expenseRepository.save(expense);
         return convertToDto(updateExpense);
