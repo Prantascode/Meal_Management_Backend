@@ -31,7 +31,6 @@ public class ExpenseDto {
     @NotNull(message = "Category is requried")
     private Expense.ExpenseCategory category;
 
-   @NotNull(message = "Added by member is required")
     private Long addedById;
     private String addedByName;
     private Long messId;
