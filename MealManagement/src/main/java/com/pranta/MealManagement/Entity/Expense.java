@@ -42,7 +42,7 @@ public class Expense {
     @Column(precision = 10,scale = 2,nullable = false)
     private BigDecimal amount;
 
-    @NotNull(message = "Date is required")
+    //@NotNull(message = "Date is required")
     @Column(nullable = false)
     private LocalDate date;
 

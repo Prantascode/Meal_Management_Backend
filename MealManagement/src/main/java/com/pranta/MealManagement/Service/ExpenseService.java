@@ -39,7 +39,7 @@ public class ExpenseService {
         Expense expense = new Expense();
         expense.setDescription(expenseDto.getDescription());
         expense.setAmount(expenseDto.getAmount());
-        expense.setDate(expenseDto.getDate());
+        expense.setDate(LocalDate.now());
         expense.setCategory(expenseDto.getCategory());
         expense.setAddedBy(addedBy);
         expense.setMess(mess);

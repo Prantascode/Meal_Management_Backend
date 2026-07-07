@@ -25,7 +25,7 @@ public class ExpenseDto {
     @DecimalMin(value = "0.0",inclusive = false,message = "Amount must be positive")
     private BigDecimal amount;
 
-    @NotNull(message = "Date is required")
+    //@NotNull(message = "Date is required")
     private LocalDate date;
 
     @NotNull(message = "Category is requried")
