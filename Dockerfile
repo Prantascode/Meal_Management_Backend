@@ -1,12 +1,12 @@
+
 FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
-# IMPORTANT: point to correct folder
 COPY MealManagement/pom.xml .
 COPY MealManagement/src src
 
-RUN mvn clean package -DskipTests
+RUN mvn -B clean package -DskipTests
 
 FROM eclipse-temurin:17-jre-focal
 
