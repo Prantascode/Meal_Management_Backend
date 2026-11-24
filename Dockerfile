@@ -3,6 +3,9 @@ FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
+# Configure alternative Maven Central mirror
+COPY settings.xml /root/.m2/settings.xml
+
 COPY MealManagement/pom.xml .
 COPY MealManagement/src src
 
